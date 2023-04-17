@@ -9,14 +9,11 @@ import { BiHelpCircle } from "react-icons/bi";
 import { MdSettings } from "react-icons/md";
 import DocContent from "./DocContent";
 import { useState } from "react";
-import { actions, useEth } from "../../contexts/EthContext";
 
-const DoctorHome = () => {
-  // const [state, setstate] = useState(0);
-  const { state, dispatch } = useEth();
-
+const BookDoctor = () => {
+  const [state, setstate] = useState(0);
   return (
-    <>
+    <div>
       <Box>
         <Box
           display="flex"
@@ -62,13 +59,7 @@ const DoctorHome = () => {
                   _hover={{ bgColor: "#576CBC", rounded: "md" }}
                   color="#A5D7E8"
                   cursor="pointer"
-                  onClick={() => {
-                    // setstate(0);
-                    dispatch({
-                      type: actions.changeDoctorSideBarState,
-                      data: 0,
-                    });
-                  }}
+                  onClick={() => setstate(0)}
                 >
                   <RiDashboardFill size={25} /> <Text ml="4">Profile</Text>
                 </Box>
@@ -83,13 +74,7 @@ const DoctorHome = () => {
                   _hover={{ bgColor: "#576CBC", rounded: "md" }}
                   color="#A5D7E8"
                   cursor="pointer"
-                  onClick={() => {
-                    // setstate(1);
-                    dispatch({
-                      type: actions.changeDoctorSideBarState,
-                      data: 1,
-                    });
-                  }}
+                  onClick={() => setstate(1)}
                 >
                   <RiDashboardFill size={25} />
                   <Text ml="4">My Prescriptions</Text>
@@ -105,13 +90,7 @@ const DoctorHome = () => {
                   _hover={{ bgColor: "#576CBC", rounded: "md" }}
                   color="#A5D7E8"
                   cursor="pointer"
-                  onClick={() => {
-                    // setstate(2);
-                    dispatch({
-                      type: actions.changeDoctorSideBarState,
-                      data: 2,
-                    });
-                  }}
+                  onClick={() => setstate(2)}
                 >
                   <RiDashboardFill size={25} /> <Text ml="4"> Appoinments</Text>
                 </Box>
@@ -126,13 +105,7 @@ const DoctorHome = () => {
                   _hover={{ bgColor: "#576CBC", rounded: "md" }}
                   color="#A5D7E8"
                   cursor="pointer"
-                  onClick={() => {
-                    // setstate(3);
-                    dispatch({
-                      type: actions.changeDoctorSideBarState,
-                      data: 3,
-                    });
-                  }}
+                  onClick={() => setstate(3)}
                 >
                   <RiDashboardFill size={25} />
                   <Text ml="4">Start appoinment</Text>
@@ -189,15 +162,18 @@ const DoctorHome = () => {
             //  border="2px" borderColor="red.300"
           >
             <Box minH="75vh">
-              <DocContent
-              // state={state}
-              />
+              <Box>
+                <h2>Book a doctor </h2>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Repellendus, labore laborum obcaecati suscipit reprehenderit
+                debitis amet odio mollitia et vel!
+              </Box>
             </Box>
           </Box>
         </Box>
       </Box>
-    </>
+    </div>
   );
 };
 
-export default DoctorHome;
+export default BookDoctor;

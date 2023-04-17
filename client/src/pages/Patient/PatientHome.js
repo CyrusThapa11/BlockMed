@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Box, Button, Center, Flex, Hide, Text } from "@chakra-ui/react";
 import React from "react";
 // ImHome
@@ -7,9 +8,14 @@ import { BiHelpCircle } from "react-icons/bi";
 import { MdSettings } from "react-icons/md";
 import MainContent from "./MainContent";
 import { useState } from "react";
+import { actions, useEth } from "../../contexts/EthContext";
 
 const PatientHome = () => {
-  const [state, setstate] = useState(0);
+  // const [state, setstate] = useState(0);
+  const {
+    state: { contract, accounts },
+    dispatch,
+  } = useEth();
   return (
     <Box>
       <Box
@@ -43,7 +49,13 @@ const PatientHome = () => {
                 _hover={{ bgColor: "#576CBC", rounded: "md" }}
                 color="#A5D7E8"
                 cursor="pointer"
-                onClick={() => setstate(0)}
+                onClick={() => {
+                  // setstate(0);
+                  dispatch({
+                    type: actions.changePatientSideBarState,
+                    data: 0,
+                  });
+                }}
               >
                 {" "}
                 <ImHome size={25} /> <Text ml="4">Home</Text>{" "}
@@ -60,7 +72,13 @@ const PatientHome = () => {
                 _hover={{ bgColor: "#576CBC", rounded: "md" }}
                 color="#A5D7E8"
                 cursor="pointer"
-                onClick={() => setstate(0)}
+                onClick={() => {
+                  // setstate(0);
+                  dispatch({
+                    type: actions.changePatientSideBarState,
+                    data: 0,
+                  });
+                }}
               >
                 {" "}
                 <RiDashboardFill size={25} /> <Text ml="4">Profile</Text>{" "}
@@ -76,7 +94,13 @@ const PatientHome = () => {
                 _hover={{ bgColor: "#576CBC", rounded: "md" }}
                 color="#A5D7E8"
                 cursor="pointer"
-                onClick={() => setstate(1)}
+                onClick={() => {
+                  // setstate(1);
+                  dispatch({
+                    type: actions.changePatientSideBarState,
+                    data: 1,
+                  });
+                }}
               >
                 {" "}
                 <RiDashboardFill size={25} /> <Text ml="4">My Records</Text>{" "}
@@ -92,7 +116,13 @@ const PatientHome = () => {
                 _hover={{ bgColor: "#576CBC", rounded: "md" }}
                 color="#A5D7E8"
                 cursor="pointer"
-                onClick={() => setstate(2)}
+                onClick={() => {
+                  // setstate(2);
+                  dispatch({
+                    type: actions.changePatientSideBarState,
+                    data: 2,
+                  });
+                }}
               >
                 {" "}
                 <RiDashboardFill size={25} />{" "}
@@ -109,7 +139,35 @@ const PatientHome = () => {
                 _hover={{ bgColor: "#576CBC", rounded: "md" }}
                 color="#A5D7E8"
                 cursor="pointer"
-                onClick={() => setstate(3)}
+                onClick={() => {
+                  // setstate(6);
+                  dispatch({
+                    type: actions.changePatientSideBarState,
+                    data: 6,
+                  });
+                }}
+              >
+                {" "}
+                <RiDashboardFill size={25} /> <Text ml="4">View Doctor</Text>{" "}
+              </Box>
+              <Box
+                my="2"
+                display="flex"
+                justifyContent={"flex-start"}
+                alignItems={"center"}
+                w="full"
+                p="2"
+                pl="5"
+                _hover={{ bgColor: "#576CBC", rounded: "md" }}
+                color="#A5D7E8"
+                cursor="pointer"
+                onClick={() => {
+                  // setstate(3);
+                  dispatch({
+                    type: actions.changePatientSideBarState,
+                    data: 3,
+                  });
+                }}
               >
                 {" "}
                 <RiDashboardFill size={25} /> <Text ml="4">My Appoinment</Text>{" "}
@@ -125,7 +183,13 @@ const PatientHome = () => {
                 _hover={{ bgColor: "#576CBC", rounded: "md" }}
                 color="#A5D7E8"
                 cursor="pointer"
-                onClick={() => setstate(4)}
+                onClick={() => {
+                  // setstate(4);
+                  dispatch({
+                    type: actions.changePatientSideBarState,
+                    data: 4,
+                  });
+                }}
               >
                 {" "}
                 <BiHelpCircle size={25} /> <Text ml="4">Help</Text>{" "}
@@ -141,7 +205,13 @@ const PatientHome = () => {
                 _hover={{ bgColor: "#576CBC", rounded: "md" }}
                 color="#A5D7E8"
                 cursor="pointer"
-                onClick={() => setstate(5)}
+                onClick={() => {
+                  // setstate(5);
+                  dispatch({
+                    type: actions.changePatientSideBarState,
+                    data: 5,
+                  });
+                }}
               >
                 <MdSettings size={25} /> <Text ml="4">Settings</Text>{" "}
               </Box>
@@ -155,7 +225,9 @@ const PatientHome = () => {
           //  border="2px" borderColor="red.300"
         >
           <Box minH="75vh">
-            <MainContent state={state} />
+            <MainContent
+            // state={state}
+            />
           </Box>
         </Box>
       </Box>

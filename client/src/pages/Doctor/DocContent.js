@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import {
   Box,
@@ -14,8 +15,11 @@ import DocProfile from "../../components/Doctor/DocProfile";
 import DoctorPresciptions from "./../../components/Doctor/DoctorPresciptions";
 import DoctorAppointments from "../../components/Doctor/DoctorAppointments";
 import StartAppointment from "../../components/Doctor/StartAppointment";
+import { useEth } from "../../contexts/EthContext";
 
-const DocContent = ({ state }) => {
+const DocContent = ({ state2 }) => {
+  const { state } = useEth();
+
   return (
     <>
       <Card bgColor="#B39DDB" boxShadow={"md"}>
@@ -49,7 +53,7 @@ const DocContent = ({ state }) => {
                 See a detailed analysis of all your business clients.
               </Text>
             </Box> */}
-            {state === 0 ? (
+            {state.changeDoctorSideBarState === 0 ? (
               <>
                 {" "}
                 <DocProfile />{" "}
@@ -57,7 +61,7 @@ const DocContent = ({ state }) => {
             ) : (
               <></>
             )}
-            {state === 1 ? (
+            {state.changeDoctorSideBarState === 1 ? (
               <>
                 {" "}
                 <DoctorPresciptions />{" "}
@@ -65,7 +69,7 @@ const DocContent = ({ state }) => {
             ) : (
               <></>
             )}
-            {state === 2 ? (
+            {state.changeDoctorSideBarState === 2 ? (
               <>
                 {" "}
                 <DoctorAppointments />{" "}
@@ -73,7 +77,7 @@ const DocContent = ({ state }) => {
             ) : (
               <></>
             )}
-            {state === 4 ? (
+            {state.changeDoctorSideBarState === 3 ? (
               <>
                 {" "}
                 <StartAppointment />{" "}

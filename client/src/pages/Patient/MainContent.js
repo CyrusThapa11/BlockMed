@@ -1,21 +1,15 @@
-import {
-  Box,
-  Card,
-  CardBody,
-  CardHeader,
-  Divider,
-  Heading,
-  Stack,
-  StackDivider,
-  Text,
-} from "@chakra-ui/react";
+/* eslint-disable no-unused-vars */
+import { Card, CardBody, Stack } from "@chakra-ui/react";
 import React, { useState } from "react";
 import Profile from "../../components/Patient/Profile";
 import PatientRecords from "../../components/Patient/PatientRecords";
 import BookAppointment from "../../components/Patient/BookAppointment";
 import MyAppointments from "../../components/Patient/MyAppointments";
+import ViewDoc from "./../../components/Doctor/ViewDoc";
+import { useEth } from "../../contexts/EthContext";
 
-const MainContent = ({state}) => {
+const MainContent = ({ state2 }) => {
+  const { state, dispatch } = useEth();
   return (
     <>
       <Card bgColor="#B39DDB" boxShadow={"md"}>
@@ -49,7 +43,7 @@ const MainContent = ({state}) => {
                 See a detailed analysis of all your business clients.
               </Text>
             </Box> */}
-            {state === 0 ? (
+            {state.changePatientSideBarState === 0 ? (
               <>
                 {" "}
                 <Profile />{" "}
@@ -57,7 +51,7 @@ const MainContent = ({state}) => {
             ) : (
               <></>
             )}
-            {state === 1 ? (
+            {state.changePatientSideBarState === 1 ? (
               <>
                 {" "}
                 <PatientRecords />{" "}
@@ -65,7 +59,7 @@ const MainContent = ({state}) => {
             ) : (
               <></>
             )}
-            {state === 2 ? (
+            {state.changePatientSideBarState === 2 ? (
               <>
                 {" "}
                 <BookAppointment />{" "}
@@ -73,7 +67,7 @@ const MainContent = ({state}) => {
             ) : (
               <></>
             )}
-            {state === 3 ? (
+            {state.changePatientSideBarState === 3 ? (
               <>
                 {" "}
                 <MyAppointments />{" "}
@@ -81,10 +75,18 @@ const MainContent = ({state}) => {
             ) : (
               <></>
             )}
-            {state === 4 ? (
+            {state.changePatientSideBarState === 4 ? (
               <>
                 {" "}
                 <Profile />{" "}
+              </>
+            ) : (
+              <></>
+            )}
+            {state.changePatientSideBarState === 6 ? (
+              <>
+                {" "}
+                <ViewDoc />{" "}
               </>
             ) : (
               <></>

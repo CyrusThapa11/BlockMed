@@ -1,25 +1,14 @@
 import { Box, Button, Input } from "@chakra-ui/react";
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import React, { useContext, useReducer, useState } from "react";
-import app from "../../firebaseconfig";
-import {
-  collection,
-  addDoc,
-  getFirestore,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
-import { actions, initialState, reducer } from "../../contexts/EthContext";
+import React, { useContext, useState } from "react";
+
+import { actions } from "../../contexts/EthContext";
 import { EthContext } from "../../contexts/EthContext";
 import { GoogleAuth, LoginUser, registerUser } from "../Common/GoogleAuth";
 import { useToast } from "@chakra-ui/react";
 
 const AdminAuth = () => {
-  const [state, setstate] = useState(0);
   const GobalState = useContext(EthContext).state;
   const dispatch = useContext(EthContext).dispatch;
-  const db = getFirestore(app);
   console.log("GobalState", GobalState);
 
   const [UserState, setUserState] = useState(null);

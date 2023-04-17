@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useContext } from "react";
 import Features from "../../components/Common/Features.js";
 import Header from "../../components/Common/Header.js";

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Box, Button, Input, useToast } from "@chakra-ui/react";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import React, { useContext, useReducer, useState } from "react";
