@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { EthProvider } from "./contexts/EthContext";
 
 import { Routes, Route } from "react-router-dom";
@@ -10,6 +11,7 @@ import HospitalHome from "./pages/Hospital/HospitalHome";
 import PatientHome from "./pages/Patient/PatientHome";
 import DoctorHome from "./pages/Doctor/DoctorHome";
 import AdminHome from "./pages/Admin/AdminHome";
+import BookDoctor from "./pages/Doctor/BookDoctor";
 
 function App() {
   return (
@@ -22,6 +24,7 @@ function App() {
           <Route path="/hospital/" exact element={<HospitalHome />} />
           <Route path="/patient/" exact element={<PatientHome />} />
           <Route path="/doctor/" exact element={<DoctorHome />} />
+          <Route path="/doctor/:id" exact element={<BookDoctor />} />
           <Route path="/admin/" exact element={<AdminHome />} />
           <Route path="/auth" exact element={<Register />} />
 

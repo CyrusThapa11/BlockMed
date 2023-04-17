@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { actions } from "../../contexts/EthContext";
 import app from "../../firebaseconfig";

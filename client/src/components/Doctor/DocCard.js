@@ -1,3 +1,4 @@
+
 import {
   Heading,
   Avatar,
@@ -6,19 +7,41 @@ import {
   Text,
   Stack,
   Button,
-  Link,
-  Badge,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { actions, useEth } from "../../contexts/EthContext";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
-const DocCard = () => {
+const DocCard = ({ name, email, address_ }) => {
+  const {
+    dispatch,
+  } = useEth();
+
+  console.log("address_,", address_);
+  console.log("address_,", typeof address_);
+  const ViewADoctor = () => {
+    console.log("address_", address_);
+    dispatch({
+      type: actions.doctorInView,
+      data: address_,
+    });
+    dispatch({
+      type: actions.changePatientSideBarState,
+      data: 6,
+    });
+    // changedoctorSideBarState
+  };
+
   return (
     <>
       {/* <Box maxW={"22vw"} minW="20vw"> */}
-      <Center py={6} flex="1">
+      <Center py={6} flex="1" minH="40vh">
         <Box
-          w="full"
+          // w="full"
+          h="full"
           minW={"20vw"}
+          maxW="35vw"
           bg={useColorModeValue("white", "gray.900")}
           boxShadow={"2xl"}
           rounded={"lg"}
@@ -46,17 +69,18 @@ const DocCard = () => {
             }}
           />
           <Heading fontSize={"2xl"} fontFamily={"body"}>
-            Lindsey James
+            {name || "Lindsey James"}
           </Heading>
           <Text fontWeight={600} color={"gray.500"} mb={3}>
-            @lindsey_jam3s
+            @{email || "lindsey_jam3s"}
           </Text>
           <Text
             textAlign={"center"}
             color={useColorModeValue("gray.700", "gray.400")}
             px={3}
           >
-            Actress, musician, songwriter and artist. PM for work inquires or{" "}
+            {address_?.slice(0, 20) ||
+              "Actress, musician, songwriter and artist. PM for work inquires or"}
             <Link href={"#"} color={"blue.400"}>
               #tag
             </Link>{" "}
@@ -74,6 +98,7 @@ const DocCard = () => {
             >
               Message
             </Button>
+            {/* <Link to={`/doctor/${address_}`}> */}
             <Button
               flex={1}
               fontSize={"sm"}
@@ -89,9 +114,11 @@ const DocCard = () => {
               _focus={{
                 bg: "blue.500",
               }}
+              onClick={() => ViewADoctor()}
             >
               Book/View
-            </Button>
+            </Button>{" "}
+            {/* </Link> */}
           </Stack>
         </Box>
       </Center>

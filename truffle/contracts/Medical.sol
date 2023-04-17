@@ -5,24 +5,16 @@ import "./Medical_2.sol";
 
 contract HealthManagement is HealthManagement2 {
 
-    
-    
     constructor(){
         patientCount = 0;
         doctorCount = 0;
         appointmentCount = 0;
         owner_ = msg.sender;
     }
-
-    // all funciton members : 
-
     
-
-  
-   // register doctor 
-
    function addDoctor(
         string memory name,
+        string memory email,
         address payable address_,
         uint256 basefee
         ) public  {
@@ -31,8 +23,9 @@ contract HealthManagement is HealthManagement2 {
         
         alldoctors.push(msg.sender);
         allDoctors[msg.sender].name = name;
+        allDoctors[msg.sender].email = email;
         allDoctors[msg.sender].address_ = address_;
-        allDoctors[msg.sender].basefee = basefee;
+        allDoctors[msg.sender].basefee = basefee*(1 ether);
         allDoctors[msg.sender].starCount = 0;
         allDoctors[msg.sender].totalPatients = 0;
         // allDoctors[msg.sender].records_ = Record [](0);
@@ -47,10 +40,9 @@ contract HealthManagement is HealthManagement2 {
         // require(sent, "Failed to send Ether");
    }
 
-   function takeAppointment(address payable docAddr,uint256 slot) public {
-        bool done =  payFees(docAddr);
-        require(done , "Failed to send Ether");
-        Appointment memory a = Appointment(false, payable(msg.sender),docAddr,allPatients[msg.sender].name , allDoctors[docAddr].name , slot,0,0);
+   function takeAppointment(address docAddr,uint256 slot) public {
+
+        Appointment memory a = Appointment(false, payable(msg.sender),payable(docAddr),allPatients[msg.sender].name , allDoctors[docAddr].name , slot,0,0);
         allDoctors[docAddr].appointments_.push(a);
         allPatients[msg.sender].myAppointments.push(a);
         // add to patients appointments too 

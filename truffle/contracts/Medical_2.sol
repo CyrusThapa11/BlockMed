@@ -42,6 +42,7 @@ contract HealthManagement2 {
 
     struct Doctor{
         string name;
+        string email;
         address payable address_;
         // address [] doctorToPatient;
         uint256 basefee;
@@ -84,12 +85,6 @@ contract HealthManagement2 {
         );
         allPatients[msg.sender].records_.push(r1);
         allPatients[msg.sender].records_.push(r1);
-        // Record [] records_
-        // allPatients[msg.sender].records_ =Record [] ;
-        // allPatients[msg.sender].records_= new Record[](0)  ;
-        // Record [] storage  r = new Record [](0) ; 
-        // Record [] memory r = new Record [](0) ;
-        // allPatients[msg.sender].records_=r;
         allPatientsList.push(msg.sender);
         patientCount+=1;
     } 
@@ -132,25 +127,32 @@ contract HealthManagement2 {
         return (r);
     }
 
-    // function getRecordOfOnePatient(address p) public view returns ( Record[] memory doctorRecord ){
-    //     Patient memory P = allPatients[p];
-    //     uint count = 0;
-    //     uint len = P.records_.length;
-    //     uint pos = 0;
-    //     require(len > 0 ,"No data");
-    //     // if(len == 0)return ;
-    //     for(uint i=0 ; i < P.records_.length  ;i++)
-    //         if(P.records_[i].doctor_ == msg.sender)count+=1;
+    function getRecordOfOnePatient(address p) public view returns ( Record[] memory doctorRecord ){
+        Patient memory P = allPatients[p];
+        uint count = 0;
+        uint len = P.records_.length;
+        uint pos = 0;
+        require(len > 0 ,"No data");
+        // if(len == 0)return ;
+        for(uint i=0 ; i < P.records_.length  ;i++)
+            if(P.records_[i].doctor_ == msg.sender)count+=1;
         
-    //     Record [] memory temp = new Record[](count) ;
+        Record [] memory temp = new Record[](count) ;
 
-    //     for(uint i=0 ; i < P.records_.length  ;i++)
-    //         if(P.records_[i].doctor_ == msg.sender){
-    //            temp[pos] = P.records_[i];
-    //            pos++;
-    //         }
+        for(uint i=0 ; i < P.records_.length  ;i++)
+            if(P.records_[i].doctor_ == msg.sender){
+               temp[pos] = P.records_[i];
+               pos++;
+            }
 
-    //     return (temp);
-    // }
-   
+        return (temp);
+    }
+    
+    function getDoctorAppointment(address docAdd)public view returns(Appointment [] memory app ){
+        return (allDoctors[docAdd].appointments_);
+    }
+
+    function getPatientAppointment(address patAdd)public view returns(Appointment [] memory app ){
+        return (allPatients[patAdd].myAppointments);
+    }
 }
