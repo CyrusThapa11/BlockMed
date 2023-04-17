@@ -67,6 +67,7 @@ const StartAppointment = () => {
     });
     console.log("finalPres", finalPres);
     console.log("CID", CID);
+    //bafybeibybhge35ypmyd3sghytyzhrddym53lfnap5uhtfjnfrrkbbss52e
     console.log("finalPres", finalPres);
     console.log("accounts[0]", accounts[0]);
     console.log("state.patientInView", state.patientInView);

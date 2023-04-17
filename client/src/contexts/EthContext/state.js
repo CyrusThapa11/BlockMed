@@ -3,8 +3,10 @@ const actions = {
   login: "LOGIN",
   logout: "LOGOUT",
   doctorInView: "DOCTOR_IN_VIEW",
+  patientInView: "PATIENT_IN_VIEW",
   changeDoctorSideBarState: "CHANGE_DOCTOR_SIDEBAR_STATE",
   changePatientSideBarState: "CHANGE_PATIENT_SIDEBAR_STATE",
+  recordInView: "RECORD_IN_VIEW",
 };
 
 const initialState = {
@@ -22,6 +24,7 @@ const initialState = {
   ethID: null,
   doctorInView: null,
   patientInView: null,
+  recordInView: null,
 };
 
 const reducer = (state, action) => {
@@ -37,6 +40,8 @@ const reducer = (state, action) => {
       return { ...state, doctorInView: data };
     case actions.patientInView:
       return { ...state, patientInView: data };
+    case actions.recordInView:
+      return { ...state, recordInView: data };
     case actions.changeDoctorSideBarState:
       return { ...state, changeDoctorSideBarState: data };
     case actions.changePatientSideBarState:
