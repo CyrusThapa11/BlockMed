@@ -27,7 +27,6 @@ function App() {
           <Route path="/doctor/:id" exact element={<BookDoctor />} />
           <Route path="/admin/" exact element={<AdminHome />} />
           <Route path="/auth" exact element={<Register />} />
-
           {/* <Route path="/register/" element={<Register />} /> */}
         </Routes>
         <Footer />

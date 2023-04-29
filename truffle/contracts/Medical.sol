@@ -28,6 +28,7 @@ contract HealthManagement is HealthManagement2 {
         allDoctors[msg.sender].basefee = basefee*(1 ether);
         allDoctors[msg.sender].starCount = 0;
         allDoctors[msg.sender].totalPatients = 0;
+        isDoctor[msg.sender] = true;
         // allDoctors[msg.sender].records_ = Record [](0);
         doctorCount += 1;
         
