@@ -80,11 +80,6 @@ contract HealthManagement2 {
         allPatients[msg.sender].phone= phone;
         allPatients[msg.sender].dob= dob;
         allPatients[msg.sender].email= email;
-        Record memory r1= Record(
-            "a","a","a",payable(msg.sender),10,10,"a",payable(msg.sender)
-        );
-        allPatients[msg.sender].records_.push(r1);
-        allPatients[msg.sender].records_.push(r1);
         allPatientsList.push(msg.sender);
         patientCount+=1;
     } 
@@ -101,18 +96,18 @@ contract HealthManagement2 {
     function addPatientRecord(
         string memory currentfiles,
         string memory presciptions,
-        address payable doctor_,
+        address doctor_,
         string memory docname,
         string memory patientName,
-        address payable patientaddr
+        address  patientaddr
         ) public payable {
 
         require(isPatient[patientaddr],"You are not a patient");
         require(isDoctor[msg.sender],"You are not a Doctor");
         // might have to do storage
 
-        allPatients[patientaddr].records_.push(Record(docname,currentfiles,presciptions,doctor_,block.timestamp,msg.value  ,patientName,patientaddr));
-        allDoctors[doctor_].records_.push(Record(docname,currentfiles,presciptions,doctor_,block.timestamp,msg.value,patientName,patientaddr));
+        allPatients[patientaddr].records_.push(Record(docname,currentfiles,presciptions,payable(doctor_),block.timestamp,msg.value  ,patientName,payable(patientaddr)));
+        allDoctors[doctor_].records_.push(Record(docname,currentfiles,presciptions,payable(doctor_),block.timestamp,msg.value,patientName,payable(patientaddr)));
         
     }
     
