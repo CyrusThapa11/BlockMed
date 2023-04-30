@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { EthProvider } from "./contexts/EthContext";
+import { EthContext, EthProvider } from "./contexts/EthContext";
 
 import { Routes, Route } from "react-router-dom";
 import Register from "./components/Auth/Register";
@@ -12,8 +12,12 @@ import PatientHome from "./pages/Patient/PatientHome";
 import DoctorHome from "./pages/Doctor/DoctorHome";
 import AdminHome from "./pages/Admin/AdminHome";
 import BookDoctor from "./pages/Doctor/BookDoctor";
+import { useContext } from "react";
 
 function App() {
+  const GobalState = useContext(EthContext);
+  // const GobalState = useContext(EthContext).state;
+  console.log("GobalState", GobalState);
   return (
     <>
       <EthProvider>

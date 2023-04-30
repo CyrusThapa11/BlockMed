@@ -7,7 +7,7 @@ import { GoogleAuth, LoginUser, registerUser } from "../Common/GoogleAuth";
 const HospitalAuth = () => {
   const GobalState = useContext(EthContext).state;
   const dispatch = useContext(EthContext).dispatch;
-  console.log("GobalState", GobalState);
+  // console.log("GobalState", GobalState);
 
   const [UserState, setUserState] = useState(null);
 
@@ -28,7 +28,7 @@ const HospitalAuth = () => {
   const loginWithGoogle = async () => {
     try {
       let data = await GoogleAuth("admin", GobalState);
-      console.log("recieved data", data);
+      // console.log("recieved data", data);
       dispatch({
         type: actions.login,
         data: {
@@ -37,7 +37,7 @@ const HospitalAuth = () => {
       });
       showToast("success", "Loggedin successfully");
     } catch (error) {
-      console.log("error MILGYA", error);
+      // console.log("error MILGYA", error);
       showToast("error", error.message);
     }
   };

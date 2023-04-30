@@ -1,4 +1,3 @@
-
 import {
   Heading,
   Avatar,
@@ -10,16 +9,13 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { actions, useEth } from "../../contexts/EthContext";
-import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const DocCard = ({ name, email, address_ }) => {
-  const {
-    dispatch,
-  } = useEth();
+  const { dispatch } = useEth();
 
   console.log("address_,", address_);
-  console.log("address_,", typeof address_);
+  // console.log("address_,", typeof address_);
   const ViewADoctor = () => {
     console.log("address_", address_);
     dispatch({

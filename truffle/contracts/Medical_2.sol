@@ -2,11 +2,12 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 contract HealthManagement2 {
-  struct Record{
+    struct Record{
         // string [] fileHashes;
         string docname;
         string fileHashes;
         string presciptions;
+        string finalRemarks;
         address payable doctor_;
         uint256 timeStamp;
         uint256 amount;
@@ -25,6 +26,7 @@ contract HealthManagement2 {
         uint256 timeslot_;
         uint256 timeStart;
         uint256 timeEnd;
+        uint256 id;
     }
 
     // PATIENTS :
@@ -38,6 +40,7 @@ contract HealthManagement2 {
         string bloodgroup;
         uint256 dob;
         Appointment [] myAppointments;
+        mapping (address => bool) recordAccess;
     }
 
     struct Doctor{
@@ -89,16 +92,18 @@ contract HealthManagement2 {
         string memory bloodgroup , uint256  dob ,Record [] memory recordss) {
 
         require(isPatient[addr],"You are not a patient");
-        Patient memory p = allPatients[addr];
+        Patient storage p = allPatients[addr];
         return (p.name,p.email,p.age,p.phone,p.bloodgroup,p.dob,p.records_);
+    
     }
     
     function addPatientRecord(
         string memory currentfiles,
         string memory presciptions,
+        string memory finalRemarks,
         address doctor_,
-        string memory docname,
-        string memory patientName,
+        // string memory docname,
+        // string memory patientName,
         address  patientaddr
         ) public payable {
 
@@ -106,13 +111,17 @@ contract HealthManagement2 {
         require(isDoctor[msg.sender],"You are not a Doctor");
         // might have to do storage
 
-        allPatients[patientaddr].records_.push(Record(docname,currentfiles,presciptions,payable(doctor_),block.timestamp,msg.value  ,patientName,payable(patientaddr)));
-        allDoctors[doctor_].records_.push(Record(docname,currentfiles,presciptions,payable(doctor_),block.timestamp,msg.value,patientName,payable(patientaddr)));
+        allPatients[patientaddr].records_.push(Record(allDoctors[doctor_].name,currentfiles,presciptions,finalRemarks,payable(doctor_),block.timestamp,msg.value,allPatients[patientaddr].name,payable(patientaddr)));
+        allDoctors[doctor_].records_.push(Record(allDoctors[doctor_].name,currentfiles,presciptions,finalRemarks,payable(doctor_),block.timestamp,msg.value,allPatients[patientaddr].name,payable(patientaddr)));
         
     }
     
     function getPatientRecords(address addr) public view returns( Record[] memory records ) {
+        // require(addr==msg.sender,"You are not the owner");
         require(isPatient[addr],"You are not a patient");
+        if(msg.sender != addr){
+            require(allPatients[addr].recordAccess[msg.sender] == true,"You are not authorized to view");
+        }
         Record [] memory r = allPatients[addr].records_;
         return (r);
     }
@@ -123,7 +132,7 @@ contract HealthManagement2 {
     }
 
     function getRecordOfOnePatient(address p) public view returns ( Record[] memory doctorRecord ){
-        Patient memory P = allPatients[p];
+        Patient storage P = allPatients[p];
         uint count = 0;
         uint len = P.records_.length;
         uint pos = 0;
@@ -150,4 +159,14 @@ contract HealthManagement2 {
     function getPatientAppointment(address patAdd)public view returns(Appointment [] memory app ){
         return (allPatients[patAdd].myAppointments);
     }
+
+    function updateRecordAccess (address docAddr)public {
+        Patient storage P = allPatients[msg.sender];
+        require(P.recordAccess[docAddr]==false,"You have already updated");
+        allPatients[msg.sender].recordAccess[docAddr] = true;
+    }
+
+    // function ve
+
+    // ADD PPPROVAL
 }

@@ -15,6 +15,12 @@ import "react-datetime-picker/dist/DateTimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 
+function randomID(len) {
+  let result = Math.floor(1000 + Math.random() * 9000);
+  console.log("ROOOM ID ", result);
+  return result.toString();
+}
+
 const ViewDoc = () => {
   const {
     state: { contract, accounts },
@@ -58,11 +64,12 @@ const ViewDoc = () => {
   console.log("new Date(),", new Date().getDate());
 
   const bookAppointment = async () => {
+    // here
     console.log("blooking");
     let timest = Date.parse(value) / 1000;
     console.log("timest", timest);
     await contract.methods
-      .takeAppointment(state.doctorInView, timest)
+      .takeAppointment(state.doctorInView, timest, randomID(4))
       .send({ from: accounts[0] });
   };
   // console.log("new Date(),", new Date() + 5);

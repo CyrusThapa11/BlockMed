@@ -35,11 +35,11 @@ const DoctorAppointments = () => {
     setDoctorAppointments(newAppointments);
   };
 
-  const startPatientAppointment = async (indexx, timeslot) => {
+  const startPatientAppointment = async (indexx, timeslot, roomid) => {
     console.log("startPatientAppointment indexx ", indexx);
 
     // update state in blockchain
-
+    console.log("roomid", roomid);
     let startTime = Date.parse(new Date()) / 1000;
 
     console.log("startTime", startTime);
@@ -49,7 +49,7 @@ const DoctorAppointments = () => {
       .send({ from: accounts[0] });
 
     // update the state in react app for current patient
-
+    console.log("dispatching it !");
     dispatch({
       type: actions.patientInView,
       data: DoctorAppointments[indexx].patient_,
@@ -57,6 +57,10 @@ const DoctorAppointments = () => {
     dispatch({
       type: actions.changeDoctorSideBarState,
       data: 3,
+    });
+    dispatch({
+      type: actions.addROOMID,
+      data: roomid,
     });
   };
 
@@ -74,7 +78,7 @@ const DoctorAppointments = () => {
         alignItems={"center"}
         minH="70vh"
       >
-        <TableContainer maxH="60vh" overflow={"scroll"}>
+        <TableContainer maxH="60vh" overflowY={"scroll"}>
           <Table colorScheme="teal">
             <TableCaption>Imperial to metric conversion factors</TableCaption>
             <Thead>
@@ -123,12 +127,33 @@ const DoctorAppointments = () => {
                           () =>
                             startPatientAppointment(
                               appointment.indexx,
-                              appointment.timeslot_
+                              appointment.timeslot_,
+                              appointment.id
                             )
+                          // ! ADD APPOINTMENT ID !
                           // appointment.patient_ to state
                         }
                       >
                         Start appointment
+                      </Button>
+                    </Td>
+                    <Td>
+                      <Button
+                        size="sm"
+                        variant={"outline"}
+                        // onClick={
+                        //   () =>
+                        //     // startPatientAppointment(
+                        //     //   appointment.indexx,
+                        //     //   appointment.timeslot_
+                        //     // )
+                        //     return console.log('join the meeting back !')
+
+                        //   // ! ADD APPOINTMENT ID !
+                        //   // appointment.patient_ to state
+                        // }
+                      >
+                        JOIN
                       </Button>
                     </Td>
                   </Tr>

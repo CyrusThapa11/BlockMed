@@ -16,8 +16,9 @@ import React, { useEffect, useState } from "react";
 import useEth from "./../../contexts/EthContext/useEth";
 import { Button } from "@chakra-ui/react";
 import { actions } from "../../contexts/EthContext";
+import { Link } from "react-router-dom";
 
-const PatientRecords = () => {
+const ViewPatientRecords = () => {
   // 0x1CD08d25D75fecE6f5a02B65877d283D7904B5f7
 
   const {
@@ -25,39 +26,23 @@ const PatientRecords = () => {
     dispatch,
   } = useEth();
   const [Records, setRecords] = useState(null);
-  const [DoctorAccess, setDoctorAccess] = useState(null);
+  const [PatientID, setPatientID] = useState(null);
   const getPatientRecords = async () => {
-    // console.log(" getPatientRecords ");
+    // console.log(" getPatientRecords ", PatientID);
     // getPatientRecords
     const allRecords = await contract.methods
-      .getPatientRecords(accounts[0])
+      .getPatientRecords(PatientID)
       .call({ from: accounts[0] });
     // console.log("allRecords of ", accounts[0], allRecords);
     setRecords(allRecords);
   };
   useEffect(() => {
     // effect
-    getPatientRecords();
+    // getPatientRecords();
     return () => {
       // cleanup
     };
   }, []);
-
-  const GiveDoctorAccess = async () => {
-    // console.log("GiveDoctorAccess");
-    console.log("DoctorAccess", DoctorAccess);
-    try {
-      // update to blockchain
-
-      await contract.methods
-        .updateRecordAccess(DoctorAccess)
-        .send({ from: accounts[0] });
-      // showToast("success", "Successfully updated details");
-    } catch (error) {
-      console.log("error", error);
-      // showToast("error", "Some Error in your contract");
-    }
-  };
 
   return (
     <>
@@ -68,10 +53,10 @@ const PatientRecords = () => {
           w="15vw"
           mx="2"
           type="text"
-          onChange={(e) => setDoctorAccess(e.target.value)}
+          onChange={(e) => setPatientID(e.target.value)}
         />
-        <Button mx="2" onClick={() => GiveDoctorAccess()}>
-          Add Doctor to view
+        <Button mx="2" onClick={() => getPatientRecords()}>
+          Enter Eth Address
         </Button>
       </Box>
       <TableContainer>
@@ -106,13 +91,15 @@ const PatientRecords = () => {
                   <Td>{rec.presciptions}</Td>
                   <Td>{new Date(rec.timeStamp * 1000).toLocaleString()} </Td>
                   <Td>
+                    {/* <Link  ></Link> */}
                     <Button
                       border="2px"
                       borderColor="blackAlpha.900"
                       onClick={() => {
+                        // getPatientRecords()
                         dispatch({
-                          type: actions.changePatientSideBarState,
-                          data: 7,
+                          type: actions.changeDoctorSideBarState,
+                          data: 5,
                         });
                         dispatch({
                           type: actions.recordInView,
@@ -133,4 +120,4 @@ const PatientRecords = () => {
   );
 };
 
-export default PatientRecords;
+export default ViewPatientRecords;

@@ -20,7 +20,7 @@ const PatientAuth = () => {
   const GobalState = useContext(EthContext).state;
   const dispatch = useContext(EthContext).dispatch;
   const db = getFirestore(app);
-  console.log("GobalState", GobalState);
+  // console.log("GobalState", GobalState);
 
   const [UserState, setUserState] = useState(null);
 
@@ -41,7 +41,7 @@ const PatientAuth = () => {
   const loginWithGoogle = async () => {
     try {
       let data = await GoogleAuth("admin", GobalState);
-      console.log("recieved data", data);
+      // console.log("recieved data", data);
       dispatch({
         type: actions.login,
         data: {
@@ -67,7 +67,7 @@ const PatientAuth = () => {
   const login = async () => {
     try {
       let resposne = await LoginUser(UserState);
-      console.log("resposne ", resposne);
+      // console.log("resposne ", resposne);
       dispatch({
         type: actions.login,
         data: {
@@ -76,7 +76,7 @@ const PatientAuth = () => {
       });
       showToast("success", "Loggedin successfully");
     } catch (error) {
-      console.log("error MILGYA", error);
+      // console.log("error MILGYA", error);
       showToast("error", error.message);
     }
   };

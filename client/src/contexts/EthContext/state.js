@@ -7,6 +7,7 @@ const actions = {
   changeDoctorSideBarState: "CHANGE_DOCTOR_SIDEBAR_STATE",
   changePatientSideBarState: "CHANGE_PATIENT_SIDEBAR_STATE",
   recordInView: "RECORD_IN_VIEW",
+  addROOMID: "ADD_ROOM_ID",
 };
 
 const initialState = {
@@ -25,6 +26,7 @@ const initialState = {
   doctorInView: null,
   patientInView: null,
   recordInView: null,
+  ROOMID: null,
 };
 
 const reducer = (state, action) => {
@@ -46,6 +48,8 @@ const reducer = (state, action) => {
       return { ...state, changeDoctorSideBarState: data };
     case actions.changePatientSideBarState:
       return { ...state, changePatientSideBarState: data };
+    case actions.addROOMID:
+      return { ...state, ROOMID: data };
     default:
       return { ...state };
   }
