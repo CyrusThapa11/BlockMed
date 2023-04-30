@@ -26,7 +26,7 @@ contract HealthManagement2 {
         uint256 timeslot_;
         uint256 timeStart;
         uint256 timeEnd;
-        // uint256 id;
+        uint256 id;
     }
 
     // PATIENTS :

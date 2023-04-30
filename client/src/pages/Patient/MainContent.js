@@ -8,6 +8,7 @@ import MyAppointments from "../../components/Patient/MyAppointments";
 import ViewDoc from "./../../components/Doctor/ViewDoc";
 import { useEth } from "../../contexts/EthContext";
 import ViewRecord from "../../components/Patient/ViewRecord";
+import AppointmentStart from "../../components/Patient/AppointmentStart";
 
 const MainContent = ({ state2 }) => {
   const { state, dispatch } = useEth();
@@ -96,6 +97,13 @@ const MainContent = ({ state2 }) => {
               <>
                 {" "}
                 <ViewRecord />{" "}
+              </>
+            ) : (
+              <></>
+            )}
+            {state.changePatientSideBarState === 8 ? (
+              <>
+                <AppointmentStart />
               </>
             ) : (
               <></>

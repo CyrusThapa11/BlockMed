@@ -16,16 +16,9 @@ import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 
 function randomID(len) {
-  let result = "";
-  if (result) return result;
-  var chars = "12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP",
-    maxPos = chars.length,
-    i;
-  len = len || 5;
-  for (i = 0; i < len; i++) {
-    result += chars.charAt(Math.floor(Math.random() * maxPos));
-  }
-  return result;
+  let result = Math.floor(1000 + Math.random() * 9000);
+  console.log("ROOOM ID ", result);
+  return result.toString();
 }
 
 const ViewDoc = () => {
@@ -71,12 +64,12 @@ const ViewDoc = () => {
   console.log("new Date(),", new Date().getDate());
 
   const bookAppointment = async () => {
+    // here
     console.log("blooking");
     let timest = Date.parse(value) / 1000;
     console.log("timest", timest);
     await contract.methods
-      //  randomID(5)
-      .takeAppointment(state.doctorInView, timest)
+      .takeAppointment(state.doctorInView, timest, randomID(4))
       .send({ from: accounts[0] });
   };
   // console.log("new Date(),", new Date() + 5);

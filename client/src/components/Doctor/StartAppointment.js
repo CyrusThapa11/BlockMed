@@ -106,7 +106,7 @@ const StartAppointment = () => {
       <Box minH="75vh">
         <h2>StartAppointment</h2>
 
-        <Box my="5" minH="55vh" w="full">
+        <Box my="5" maxH="full" maxW={"full"}>
           <VidCall />
         </Box>
         <Box
@@ -115,6 +115,7 @@ const StartAppointment = () => {
           display="flex"
           flexWrap={"wrap"}
           gap="3"
+          my="20"
           justifyContent={"space-around"}
           alignItems={"center"}
         >

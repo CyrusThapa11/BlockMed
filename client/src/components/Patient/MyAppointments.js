@@ -12,7 +12,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
-import { useEth } from "../../contexts/EthContext";
+import { actions, useEth } from "../../contexts/EthContext";
 
 const MyAppointments = () => {
   const {
@@ -22,14 +22,14 @@ const MyAppointments = () => {
   const [Appointments, setAppointments] = useState(null);
   const [PatientID, setPatientID] = useState(null);
 
-  const [DoctorAppointments, setDoctorAppointments] = useState(null);
+  // const [DoctorAppointments, setDoctorAppointments] = useState(null);
 
   const getDocAppointment = async () => {
     const patientDetailsAppointment = await contract.methods
       .getPatientAppointment(accounts[0])
       .call({ from: accounts[0] });
 
-    // console.log("patientDetailsAppointment", patientDetailsAppointment);
+    console.log("patientDetailsAppointment", patientDetailsAppointment);
     let newAppointments = [];
     patientDetailsAppointment.forEach((app, indexx) => {
       newAppointments.push({ ...app, indexx });
@@ -37,23 +37,28 @@ const MyAppointments = () => {
     setAppointments(newAppointments);
   };
 
-  const endPatientAppointment = async (indexx, timeslot) => {
-    // console.log("startPatientAppointment indexx ", indexx);
+  const startPatientAppointment = async (indexx, timeslot, roomid) => {
+    console.log("startPatientAppointment indexx ", indexx);
     // update state in blockchain
-    // let startTime = Date.parse(new Date()) / 1000;
-    // console.log("startTime", startTime);
+    let startTime = Date.parse(new Date()) / 1000;
+    console.log("startTime", startTime);
     // const doctorDetailsAppointment = await contract.methods
     //   .startAppointment(indexx, startTime)
     //   .send({ from: accounts[0] });
     // update the state in react app for current patient
     // dispatch({
     //   type: actions.patientInView,
-    //   data: DoctorAppointments[indexx].patient_,
+    //   data: Appointments[indexx].patient_,
     // });
-    // dispatch({
-    //   type: actions.changeDoctorSideBarState,
-    //   data: 3,
-    // });
+
+    dispatch({
+      type: actions.addROOMID,
+      data: roomid,
+    });
+    dispatch({
+      type: actions.changePatientSideBarState,
+      data: 8,
+    });
   };
 
   useEffect(() => {
@@ -114,14 +119,15 @@ const MyAppointments = () => {
                   <Button
                     size="sm"
                     variant={"outline"}
-                    // onClick={
-                    // () =>
-                    //   startPatientAppointment(
-                    //     appointment.indexx,
-                    //     appointment.timeslot_
-                    //   )
-                    // appointment.patient_ to state
-                    // }
+                    onClick={
+                      () =>
+                        startPatientAppointment(
+                          appointment.indexx,
+                          appointment.timeslot_,
+                          appointment.id
+                        )
+                      // appointment.patient_ to state
+                    }
                     // ! GO TO GOOGLE MEET LINK OF THE LINK !
                   >
                     Join
