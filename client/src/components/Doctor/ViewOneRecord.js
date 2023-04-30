@@ -15,16 +15,17 @@ import {
 import React, { useState } from "react";
 import { useEth } from "../../contexts/EthContext";
 
-const ViewRecord = () => {
+const ViewOneRecord = () => {
   const [Document, setDocument] = useState(null);
 
   const {
     state: { contract },
     state,
   } = useEth();
+
   // console.log("state.recordInView", state.recordInView);
   const openInNewTab = (url) => {
-    console.log("state.recordInView.fileHashes", state.recordInView.fileHashes);
+    // console.log("state.recordInView.fileHashes", state.recordInView.fileHashes);
     window.open(url, "_blank", "noreferrer");
   };
   return (
@@ -89,7 +90,7 @@ const ViewRecord = () => {
                     <Text textAlign={"center"}> Dosage </Text>
                   </Box>
                   {state.recordInView.presciptions.split("|").map((record_) => {
-                    console.log("record_", record_);
+                    // console.log("record_", record_);
                     let details_ = record_.split(",");
                     return (
                       <>
@@ -109,8 +110,8 @@ const ViewRecord = () => {
                     "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sint qui consectetur accusantium culpa veritatis ipsum sapiente porro delectus aut optio."}
                 </Text>
                 {/* <Text color="blue.600" fontSize="2xl">
-                  $450
-                </Text> */}
+                    $450
+                  </Text> */}
               </Stack>
             </CardBody>
             {/* <Divider /> */}
@@ -128,4 +129,4 @@ const ViewRecord = () => {
   );
 };
 
-export default ViewRecord;
+export default ViewOneRecord;

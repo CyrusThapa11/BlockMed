@@ -36,7 +36,7 @@ const Profile = () => {
   } = useEth();
   const [User, setUser] = useState(null);
   const updateFirebase = () => {
-    console.log("updateFirebase");
+    // console.log("updateFirebase");
     let user = User;
     if (user.phone) delete user["phone"];
     if (user.age) delete user["age"];
@@ -46,8 +46,8 @@ const Profile = () => {
   };
   const update = async () => {
     try {
-      console.log("update in blcokchain");
-      console.log("User", User);
+      // console.log("update in blcokchain");
+      // console.log("User", User);
       let user = User;
       if (user.password) delete user["password"];
       if (user.image) delete user["image"];

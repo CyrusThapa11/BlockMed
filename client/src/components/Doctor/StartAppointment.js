@@ -51,6 +51,7 @@ const StartAppointment = () => {
   };
 
   const upLoadRecord = async () => {
+    console.log("state is ", state);
     if (!CID || CID === null || CID === undefined) return;
     if (
       !AllPrescription ||
@@ -65,34 +66,36 @@ const StartAppointment = () => {
       let p1 = pres.name + "," + pres.amount + "," + pres.dosage;
       finalPres = finalPres + "|" + p1;
     });
-    console.log("finalPres", finalPres);
-    console.log("CID", CID);
+    // console.log("finalPres", finalPres);
+    // console.log("CID", CID);
     //bafybeibybhge35ypmyd3sghytyzhrddym53lfnap5uhtfjnfrrkbbss52e
-    console.log("finalPres", finalPres);
-    console.log("accounts[0]", accounts[0]);
-    console.log("state.patientInView", state.patientInView);
-
+    // console.log("finalPres", finalPres);
+    // console.log("accounts[0]", accounts[0]);
+    // console.log("state.patientInView", state.patientInView);
+    // console.log("FinalRemarks", FinalRemarks);
     await contract.methods
       .addPatientRecord(
         CID,
         finalPres,
+        FinalRemarks,
         accounts[0],
-        "some doc name ",
-        " some patient name ",
+        // !CHANGE THIS
+        // state.doctorInView.name,
+        // state.patientInView.name,
         state.patientInView
       )
       .send({ from: accounts[0] });
   };
 
   const uploadFiles = async () => {
-    console.log("uploading ", Filess);
+    // console.log("uploading ", Filess);
 
     let token =
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDBhNzU3ZEFDNTc1MzdkOTNlQjY5MjUzNTFiNmVBNTFjYTI0M0IxMEQiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2Nzg3MTMyMzU0NDksIm5hbWUiOiJzdCJ9.WhdSM5s_Vaqidt1vj7aglJQ87R0ypQ5RcD_1AI8s3gQ";
     const storage = new Web3Storage({ token });
     const files = Filess;
 
-    console.log(`Uploading ${files.length} files`);
+    // console.log(`Uploading ${files.length} files`);
     const cid = await storage.put(files);
     console.log("Content added with CID:", cid);
     setCID(cid);
@@ -238,17 +241,17 @@ const StartAppointment = () => {
                           multiple={true}
                           onChange={(e) => {
                             let newFiles = [];
-                            console.log("e.target.files,", e.target.files);
+                            // console.log("e.target.files,", e.target.files);
                             let l = e.target.files.length;
                             for (let i = 0; i < l; i++) {
-                              console.log("type", e.target.files[i]);
+                              // console.log("type", e.target.files[i]);
                               let type = e.target.files[i].type.split("/")[0];
-                              console.log("type", type);
+                              // console.log("type", type);
                               if (type === "image") {
                                 let url = URL.createObjectURL(
                                   e.target.files[i]
                                 );
-                                console.log("url", url);
+                                // console.log("url", url);
                                 newFiles.push({
                                   url,
                                   name: e.target.files[i].name,
@@ -308,9 +311,9 @@ const StartAppointment = () => {
                                   newUploaIimage2 = {};
                                 // preView
                                 let list = new DataTransfer();
-                                console.log("newUploaIimage", newUploaIimage);
+                                // console.log("newUploaIimage", newUploaIimage);
                                 for (let i = 0; i < preView.length; i++) {
-                                  console.log("preView[i],", preView[i]);
+                                  // console.log("preView[i],", preView[i]);
                                   if (preView[i].name !== f.name) {
                                     updatedImage.push(preView[i]);
                                     newUploaIimage2[i] = Filess[i];
@@ -319,8 +322,8 @@ const StartAppointment = () => {
                                     // delete newUploaIimage[i];
                                   }
                                 }
-                                console.log("list", list);
-                                console.log("list.files", list.files);
+                                // console.log("list", list);
+                                // console.log("list.files", list.files);
                                 // console.log("newUploaIimage2", newUploaIimage2);
                                 setpreView(updatedImage);
                                 setFiless(list.files);

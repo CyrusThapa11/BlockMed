@@ -16,6 +16,9 @@ import DoctorPresciptions from "./../../components/Doctor/DoctorPresciptions";
 import DoctorAppointments from "../../components/Doctor/DoctorAppointments";
 import StartAppointment from "../../components/Doctor/StartAppointment";
 import { useEth } from "../../contexts/EthContext";
+import PatientRecords from "../../components/Patient/PatientRecords";
+import ViewPatientRecords from "../../components/Doctor/ViewPatientRecords";
+import ViewOneRecord from "../../components/Doctor/ViewOneRecord";
 
 const DocContent = ({ state2 }) => {
   const { state } = useEth();
@@ -26,7 +29,6 @@ const DocContent = ({ state2 }) => {
         <CardBody>
           <Stack spacing="4">
             {/* CHANGE COMPONENTS HERE  */}
-
             {/* <Box>
               <Heading size="xs" textTransform="uppercase">
                 Summary
@@ -55,32 +57,44 @@ const DocContent = ({ state2 }) => {
             </Box> */}
             {state.changeDoctorSideBarState === 0 ? (
               <>
-                {" "}
-                <DocProfile />{" "}
+                <DocProfile />
               </>
             ) : (
               <></>
             )}
             {state.changeDoctorSideBarState === 1 ? (
               <>
-                {" "}
-                <DoctorPresciptions />{" "}
+                <DoctorPresciptions />
               </>
             ) : (
               <></>
             )}
             {state.changeDoctorSideBarState === 2 ? (
               <>
-                {" "}
-                <DoctorAppointments />{" "}
+                <DoctorAppointments />
               </>
             ) : (
               <></>
             )}
             {state.changeDoctorSideBarState === 3 ? (
               <>
-                {" "}
-                <StartAppointment />{" "}
+                <StartAppointment />
+              </>
+            ) : (
+              <></>
+            )}
+            {state.changeDoctorSideBarState === 4 ? (
+              <>
+                {/* SHOW PATIENTS RECORD  */}
+                <ViewPatientRecords />
+              </>
+            ) : (
+              <></>
+            )}
+            {state.changeDoctorSideBarState === 5 ? (
+              <>
+                {/* SHOW PATIENTS RECORD  */}
+                <ViewOneRecord />
               </>
             ) : (
               <></>

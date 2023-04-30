@@ -1,5 +1,6 @@
 import * as React from "react";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
+import { useEth } from "../../contexts/EthContext";
 
 function randomID(len) {
   let result = "";
@@ -20,9 +21,23 @@ export function getUrlParams(url = window.location.href) {
 }
 
 export default function VidCall() {
-  const roomID =  "1111";
+  const roomID = "1111";
+  const {
+    state: { accounts, contract },
+    dispatch,
+  } = useEth();
   let myMeeting = async (element) => {
     // generate Kit Token
+    const doctorDetailsAppointment = await contract.methods
+      .getDoctorAppointment(accounts[0])
+      .call({ from: accounts[0] });
+    // console.log("doctorDetailsAppointment,", doctorDetailsAppointment);
+    // console.log("doctorDetailsAppointment", doctorDetailsAppointment);
+    // let newAppointments = [];
+    // doctorDetailsAppointment.forEach((app, indexx) => {
+    //   newAppointments.push({ ...app, indexx });
+    // });
+    // const ROOMID = await contract
     const appID = 1180853265;
     const serverSecret = "45541ed5b9466e888973f9dd039ab6a0";
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
@@ -32,7 +47,7 @@ export default function VidCall() {
       randomID(5),
       "Anonyomous"
     );
-
+    // console.log("idhar pauch gya ! !!!!!");
     // Create instance object from Kit Token.
     const zp = ZegoUIKitPrebuilt.create(kitToken);
     // start the call

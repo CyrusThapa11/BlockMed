@@ -9,7 +9,7 @@ import EthContext from "../../contexts/EthContext/EthContext.js";
 
 const Home = () => {
   const GobalState = useContext(EthContext).state;
-  console.log("GobalState", GobalState);
+  // console.log("GobalState", GobalState);
   return (
     <>
       <Header />

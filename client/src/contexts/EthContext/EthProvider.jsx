@@ -14,7 +14,7 @@ function EthProvider({ children }) {
       const web3 = new Web3(Web3.givenProvider || "ws://localhost:7545");
       // console.log("web3,", web3);
       const accounts = await web3.eth.requestAccounts();
-      console.log("accounts", accounts);
+      // console.log("accounts", accounts);
       const networkID = await web3.eth.net.getId();
       // console.log("networkID", networkID);
       const { abi } = artifact;

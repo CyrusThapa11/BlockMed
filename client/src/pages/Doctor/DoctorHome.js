@@ -148,8 +148,16 @@ const DoctorHome = () => {
                   _hover={{ bgColor: "#576CBC", rounded: "md" }}
                   color="#A5D7E8"
                   cursor="pointer"
+                  onClick={() => {
+                    // setstate(3);
+                    dispatch({
+                      type: actions.changeDoctorSideBarState,
+                      data: 4,
+                    });
+                  }}
                 >
-                  <RiDashboardFill size={25} /> <Text ml="4">Billings</Text>
+                  <RiDashboardFill size={25} />{" "}
+                  <Text ml="4">Patient Records</Text>
                 </Box>
                 <Box
                   my="2"

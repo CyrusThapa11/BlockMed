@@ -40,7 +40,7 @@ contract HealthManagement is HealthManagement2 {
         return sent;
         // require(sent, "Failed to send Ether");
    }
-
+// uint256 id
    function takeAppointment(address docAddr,uint256 slot) public {
 
         Appointment memory a = Appointment(false, payable(msg.sender),payable(docAddr),allPatients[msg.sender].name , allDoctors[docAddr].name , slot,0,0);
@@ -49,9 +49,12 @@ contract HealthManagement is HealthManagement2 {
         // add to patients appointments too 
    }
 
+// uint256 id
     function startAppointment(uint256 index,uint256 start) public {
         require(allDoctors[msg.sender].appointments_[index].status == false,"You have completed this appointment");
         allDoctors[msg.sender].appointments_[index].status = true;
+        // allDoctors[msg.sender].appointments_[index].id = id;
+        // allPatients[msg.sender].appointments_[index].id = id;
         allDoctors[msg.sender].appointments_[index].timeStart = start;
     }
 
