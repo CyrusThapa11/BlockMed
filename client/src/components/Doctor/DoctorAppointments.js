@@ -8,6 +8,7 @@ import {
   TableContainer,
   Tbody,
   Td,
+  Text,
   Th,
   Thead,
   Tr,
@@ -23,6 +24,7 @@ const DoctorAppointments = () => {
   const [DoctorAppointments, setDoctorAppointments] = useState(null);
 
   const getDocAppointment = async () => {
+    console.log("accounts[0] in getDocAppointment ", accounts[0]);
     const doctorDetailsAppointment = await contract.methods
       .getDoctorAppointment(accounts[0])
       .call({ from: accounts[0] });
@@ -71,7 +73,7 @@ const DoctorAppointments = () => {
 
   return (
     <>
-      DoctorAppointments
+      <Text fontSize={"2xl"}>DoctorAppointments</Text>
       <Box
         display={"flex"}
         justifyContent={"center"}
@@ -80,29 +82,21 @@ const DoctorAppointments = () => {
       >
         <TableContainer maxH="60vh" overflowY={"scroll"}>
           <Table colorScheme="teal">
-            <TableCaption>Imperial to metric conversion factors</TableCaption>
             <Thead>
               <Tr>
                 <Th> Sno </Th>
-                <Th> Doctor Name</Th>
                 <Th>Doctor Address</Th>
+                <Th> Doctor Name</Th>
                 <Th> Date of appointment </Th>
                 <Th isNumeric>Amount</Th>
                 <Th>Status</Th>
-                <Th>View</Th>
+                <Th>Begin</Th>
+                <Th>Go</Th>
+                {/* <Th>Payment status</Th> */}
                 {/* <Th>Download</Th> */}
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>inches</Td>
-                <Td>millimetres (mm)</Td>
-                <Td>millimetres (mm)</Td>
-                <Td>millimetres (mm)</Td>
-                <Td isNumeric>25.4</Td>
-                <Td>Completed</Td>
-                <Td>VIEW</Td>
-              </Tr>
               {DoctorAppointments?.map((appointment, index) => {
                 return (
                   <Tr key={appointment.timeslot_}>
@@ -134,7 +128,7 @@ const DoctorAppointments = () => {
                           // appointment.patient_ to state
                         }
                       >
-                        Start appointment
+                        Start
                       </Button>
                     </Td>
                     <Td>

@@ -10,10 +10,14 @@ import {
 } from "@chakra-ui/react";
 import { actions, useEth } from "../../contexts/EthContext";
 import { Link } from "react-router-dom";
+import { Images } from "./../Common/Images";
+import docdetails from "../Common/csvjson.json";
 
-const DocCard = ({ name, email, address_ }) => {
+// const docdetails = JSON.parse(docdetails);
+const DocCard = ({ name, email, address_, image, introduction, gender }) => {
+  console.log("docdetails", docdetails);
   const { dispatch } = useEth();
-
+  console.log("image", image);
   console.log("address_,", address_);
   // console.log("address_,", typeof address_);
   const ViewADoctor = () => {
@@ -46,9 +50,10 @@ const DocCard = ({ name, email, address_ }) => {
         >
           <Avatar
             size={"xl"}
-            src={
-              "https://images.unsplash.com/photo-1520810627419-35e362c5dc07?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ"
-            }
+            src={`${
+              image ||
+              Images[Math.floor(Math.random() * 10) % Images.length].url
+            }`}
             alt={"Avatar Alt"}
             mb={3}
             pos={"relative"}
@@ -70,17 +75,40 @@ const DocCard = ({ name, email, address_ }) => {
           <Text fontWeight={600} color={"gray.500"} mb={3}>
             @{email || "lindsey_jam3s"}
           </Text>
+          <Text fontWeight={600} color={"gray.500"} mb={3}>
+            {docdetails[Math.floor(Math.random() * 10) % 5].education}
+          </Text>
+          <Text fontWeight={600} color={"gray.500"} mb={3}>
+            {gender || docdetails[Math.floor(Math.random() * 10) % 5].gender}
+          </Text>
+          {/* <Text fontWeight={600} color={"gray.500"} mb={3}>
+            gender{email || "lindsey_jam3s"}
+          </Text>
+          <Text fontWeight={600} color={"gray.500"} mb={3}>
+            @{email || "lindsey_jam3s"}
+          </Text> */}
           <Text
             textAlign={"center"}
             color={useColorModeValue("gray.700", "gray.400")}
             px={3}
           >
             {address_?.slice(0, 20) ||
-              "Actress, musician, songwriter and artist. PM for work inquires or"}
-            <Link href={"#"} color={"blue.400"}>
-              #tag
-            </Link>{" "}
-            me in your posts
+              // " I live in Shanghai from 2007, it’s almost 7years old. I have ever worked in the community health service centre in Chongming and Yangpu district. And now, I’m working in Juquan community, Baoshan district. As a doctor, my motto isDoing now what patients need".substring(
+              //   0,
+              //   30
+              // )
+              "0x0404BbE7b41c7e25b65aFbE8D67f27658D235c5F".slice(0, 20)}
+          </Text>
+          <Text
+            textAlign={"center"}
+            color={useColorModeValue("gray.700", "gray.400")}
+            px={3}
+          >
+            {introduction?.substring(0, 60) ||
+              " I live in Shanghai from 2007, it’s almost 7years old. I have ever worked in the community health service centre in Chongming and Yangpu district. And now, I’m working in Juquan community, Baoshan district. As a doctor, my motto isDoing now what patients need".substring(
+                0,
+                60
+              )}
           </Text>
 
           <Stack mt={8} direction={"row"} spacing={4}>

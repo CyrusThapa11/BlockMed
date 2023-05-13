@@ -13,10 +13,27 @@ import {
   WrapItem,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useEth } from "../../contexts/EthContext";
+import {
+  collection,
+  doc,
+  getDocs,
+  getFirestore,
+  query,
+  updateDoc,
+  where,
+} from "firebase/firestore";
+import app from "../../firebaseconfig";
+import axios from "axios";
 
 const Profile = () => {
+  const {
+    state: { contract, accounts },
+    state,
+    dispatch,
+  } = useEth();
+  const db = getFirestore(app);
   const toast = useToast();
   const showToast = (
     statuss = "success",
@@ -31,18 +48,74 @@ const Profile = () => {
       position: "top-right",
     });
   };
-  const {
-    state: { contract, accounts },
-  } = useEth();
   const [User, setUser] = useState(null);
-  const updateFirebase = () => {
-    // console.log("updateFirebase");
-    let user = User;
-    if (user.phone) delete user["phone"];
-    if (user.age) delete user["age"];
-    if (user.address) delete user["address"];
-    if (user.dob) delete user["dob"];
-    if (user.bloodgroup) delete user["bloodgroup"];
+  const [Filee, setFilee] = useState(null);
+
+  const updateFirebase = async () => {
+    try {
+      // console.log("updateFirebase");
+      let user = User;
+      if (user.phone) delete user["phone"];
+      if (user.age) delete user["age"];
+      if (user.address) delete user["address"];
+      if (user.dob) delete user["dob"];
+      if (user.bloodgroup) delete user["bloodgroup"];
+      let formData = new FormData();
+      let data = null;
+      console.log("Filee i s ", Filee);
+      if (Filee !== null && Filee !== undefined) {
+        formData.append("file", Filee);
+        formData.append("upload_preset", "blockmed");
+        console.log("formData", formData);
+        data = await axios.post(
+          "https://api.cloudinary.com/v1_1/drpcddtza/image/upload",
+          formData
+        );
+        console.log("data", data);
+      }
+
+      const q = query(
+        collection(db, "Users"),
+        where("email", "==", user.email)
+      );
+      console.log("getting users !");
+      const querySnapshot = await getDocs(q);
+      console.log("querySnapshot", querySnapshot);
+      querySnapshot.forEach(async (docc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(docc.id, " => ", docc.data());
+        // ! secure_url SET HERE
+        // await updateDoc(washingtonRef, {
+        //   regions: arrayUnion("greater_virginia"),
+        // });
+        let userRef = doc(db, "Users", `${docc.id}`);
+        // frankDocRef = doc(db, "users", "frank");
+
+        // Atomically add a new region to the "regions" array field.
+        if (
+          data !== null &&
+          user.password !== null &&
+          user.password !== undefined
+        ) {
+          await updateDoc(userRef, {
+            image: data.data.secure_url,
+            password: user.password,
+          });
+        } else if (data !== null) {
+          await updateDoc(userRef, {
+            image: data.data.secure_url,
+          });
+        } else if (user.password !== null && user.password !== undefined) {
+          await updateDoc(userRef, {
+            password: user.password,
+          });
+        }
+        return showToast("success", "Successfully updated ");
+        // console.log("doc.id", doc.id);
+      });
+    } catch (error) {
+      showToast("error", error.message || "Some Error occured");
+    }
   };
   const update = async () => {
     try {
@@ -52,7 +125,7 @@ const Profile = () => {
       if (user.password) delete user["password"];
       if (user.image) delete user["image"];
       // update to blockchain
-
+      console.log("user", user);
       await contract.methods
         .addPatient(
           user.name,
@@ -62,12 +135,24 @@ const Profile = () => {
           user.email
         )
         .send({ from: accounts[0] });
-      showToast("success", "Successfully updated details");
+      showToast("success", "Successfully updated ");
     } catch (error) {
       console.log("error", error);
-      showToast("error", "Some Error in your contract");
+      showToast("error", error.message || "Some Error occured");
     }
   };
+  const getUser = async () => {
+    const q = query(collection(db, "Users"), where("email", "==", state.email));
+    console.log("getting users !");
+    const querySnapshot = await getDocs(q);
+    console.log("querySnapshot", querySnapshot);
+    querySnapshot.forEach(async (doc) => {
+      setUser({ ...doc.data() });
+    });
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <>
@@ -84,16 +169,18 @@ const Profile = () => {
                 <Avatar
                   size="lg"
                   name="Ryan Florence"
-                  src="https://bit.ly/ryan-florence"
+                  src={`${User?.image || "https://bit.ly/ryan-florence"}`}
                 />{" "}
               </WrapItem>
               <FormControl w="50%" id="image" isRequired>
                 <FormLabel>Profile</FormLabel>
                 <Input
                   name="image"
-                  onChange={(e) =>
-                    setUser({ ...User, [e.target.name]: e.target.value })
-                  }
+                  onChange={(e) => {
+                    // setUser({ ...User, [e.target.name]: e.target.value })
+                    // console.log("TGARGE TFILES IS ", e.target.files[0]);
+                    setFilee(e.target.files[0]);
+                  }}
                   placeholder="image"
                   _placeholder={{ color: "gray.500" }}
                   type="file"
@@ -108,6 +195,7 @@ const Profile = () => {
                   onChange={(e) =>
                     setUser({ ...User, [e.target.name]: e.target.value })
                   }
+                  value={User?.email || ""}
                   placeholder="email"
                   _placeholder={{ color: "gray.500" }}
                   type="email"
@@ -122,6 +210,7 @@ const Profile = () => {
                   onChange={(e) =>
                     setUser({ ...User, [e.target.name]: e.target.value })
                   }
+                  value={User?.password || ""}
                   placeholder="password"
                   _placeholder={{ color: "gray.500" }}
                   type="password"

@@ -14,6 +14,14 @@ import DateTimePicker from "react-datetime-picker";
 import "react-datetime-picker/dist/DateTimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
+import {
+  collection,
+  getDocs,
+  getFirestore,
+  query,
+  where,
+} from "firebase/firestore";
+import app from "./../../firebaseconfig";
 
 function randomID(len) {
   let result = Math.floor(1000 + Math.random() * 9000);
@@ -27,20 +35,34 @@ const ViewDoc = () => {
     state,
   } = useEth();
 
+  const db = getFirestore(app);
   const [Doctor, setDoctor] = useState(null);
   const [DoctorAppointments, setDoctorAppointments] = useState(null);
   const [value, onChange] = useState(new Date());
-
+  console.log("Doctor", Doctor);
   const getDoctor = async () => {
     console.log("state.doctorInView", state.doctorInView);
     if (!state.doctorInView) return;
 
     console.log("getting doc dettails");
 
-    const doctorDetails = await contract.methods
+    let doctorDetails = await contract.methods
       .getOneDoctor(state.doctorInView)
       .call({ from: accounts[0] });
 
+    const q = query(
+      collection(db, "Users"),
+      where("email", "==", doctorDetails.email)
+    );
+    const querySnapshot = await getDocs(q);
+    // console.log("querySnapshot", querySnapshot);
+    if (querySnapshot) {
+      let valid = false;
+      querySnapshot.forEach((doc) => {
+        let data2 = doc.data().image;
+        doctorDetails = { ...doctorDetails, image: data2 };
+      });
+    }
     setDoctor(doctorDetails);
 
     console.log("doctorDetails", doctorDetails);
@@ -76,10 +98,6 @@ const ViewDoc = () => {
   return (
     <>
       <Box minH="75vh">
-        <h2>ViewDoc</h2>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis,
-        nesciunt?
-        {Doctor?.name}
         <Flex
           flexWrap={"wrap"}
           gap="4"
@@ -92,25 +110,35 @@ const ViewDoc = () => {
             <Card px="8" h="full">
               <CardBody display={"flex"} flexDir="column" alignItems={"center"}>
                 <Box>
-                  <Avatar
-                    size="2xl"
-                    name="Segun Adebayo"
-                    src="https://bit.ly/sage-adebayo"
-                  />{" "}
+                  {Doctor && (
+                    <Avatar
+                      size="2xl"
+                      name="Segun Adebayo"
+                      src={`${
+                        Doctor?.image
+                          ? Doctor?.image
+                          : "https://bit.ly/sage-adebayo"
+                      }`}
+                      // src={`${Doctor?.image}` || "https://bit.ly/sage-adebayo"}
+                    />
+                  )}
                 </Box>
 
                 <Box w="full" bgColor="gray.200" rounded="xl" my="2" p="5">
-                  <Text>Naman Kumar</Text>
-                  <Text>naman@gmail.com</Text>
-                </Box>
-
-                <Box w="full" bgColor="gray.200" rounded="xl" my="2" p="5">
-                  <Text>Description</Text>
-                  <Text>
-                    Lorem ipsum dolor sit amet consectetur. Lorem ipsum dolor
-                    sit amet consectetur adipisicing elit. Necessitatibus aut
-                    quia minima
+                  <Text fontSize={"md"}> Name : {Doctor?.name}</Text>
+                  <Text fontSize={"md"}> Email : {Doctor?.email}</Text>
+                  <Text fontSize={"md"}> Age : {Doctor?.age}</Text>
+                  <Text fontSize={"md"}> Location : {Doctor?.location}</Text>
+                  <Text fontSize={"md"}>
+                    {" "}
+                    BaseFee : {Doctor?.basefee / 1000000000000000000} Eth
                   </Text>
+                  <Text fontSize={"md"}> Gender : {Doctor?.gender}</Text>
+                </Box>
+
+                <Box w="full" bgColor="gray.200" rounded="xl" my="2" p="5">
+                  <Text>Introdcution</Text>
+                  <Text>{Doctor?.introduction}</Text>
                 </Box>
                 <Button
                   onClick={() => bookAppointment()}
@@ -139,11 +167,8 @@ const ViewDoc = () => {
             <Card my="2" w="full">
               <CardBody>
                 <Box overflow={"scroll"} maxH={"60vh"} p="2 ">
-                  <Text>
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                    Magni laudantium quisquam voluptatem, ipsum officiis
-                    perspiciatis amet! Ullam dolorem quaerat eaque nesciunt
-                    dicta,
+                  <Text fontSize="3xl" color="blue.400">
+                    All Appoinments
                   </Text>
                   {DoctorAppointments?.map((appointment) => {
                     return (

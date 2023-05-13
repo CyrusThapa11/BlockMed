@@ -2,7 +2,7 @@
 pragma solidity >=0.7.0 <0.9.0;
 
 import "./Medical_2.sol";
-
+// Medical.sol
 contract HealthManagement is HealthManagement2 {
 
     constructor(){
@@ -15,6 +15,10 @@ contract HealthManagement is HealthManagement2 {
    function addDoctor(
         string memory name,
         string memory email,
+        string memory gender,
+        string memory introduction,
+        uint age,
+        string memory location,
         address payable address_,
         uint256 basefee
         ) public  {
@@ -25,6 +29,10 @@ contract HealthManagement is HealthManagement2 {
         allDoctors[msg.sender].name = name;
         allDoctors[msg.sender].email = email;
         allDoctors[msg.sender].address_ = address_;
+        allDoctors[msg.sender].introduction = introduction;
+        allDoctors[msg.sender].gender = gender;
+        allDoctors[msg.sender].age = age;
+        allDoctors[msg.sender].location = location;
         allDoctors[msg.sender].basefee = basefee*(1 ether);
         allDoctors[msg.sender].starCount = 0;
         allDoctors[msg.sender].totalPatients = 0;
@@ -43,7 +51,7 @@ contract HealthManagement is HealthManagement2 {
 // uint256 id
    function takeAppointment(address docAddr,uint256 slot,uint256 id) public {
 
-        Appointment memory a = Appointment(false, payable(msg.sender),payable(docAddr),allPatients[msg.sender].name , allDoctors[docAddr].name , slot,0,0,id);
+        Appointment memory a = Appointment(false, payable(msg.sender),payable(docAddr),allPatients[msg.sender].name , allDoctors[docAddr].name , slot,0,0,id,false);
         allDoctors[docAddr].appointments_.push(a);
         allPatients[msg.sender].myAppointments.push(a);
         // add to patients appointments too 
