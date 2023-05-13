@@ -115,7 +115,7 @@ export const registerUser = async (UserState, GobalState, dispatch, role) => {
   });
 };
 
-export const LoginUser = async (UserState) => {
+export const LoginUser = async (UserState, GobalState, dispatch, role) => {
   return new Promise(async (res, rej) => {
     const db = getFirestore(app);
     const q = query(
@@ -134,6 +134,14 @@ export const LoginUser = async (UserState) => {
           // console.log(" CREDENTIALS MATCHED !");
           valid = true;
           data = doc.data();
+          dispatch({
+            type: actions.login,
+            data: {
+              ...data,
+              ethID: GobalState.accounts[0],
+            },
+          });
+
           delete data["password"];
         }
         // console.log(doc.id, " => ", doc.data());

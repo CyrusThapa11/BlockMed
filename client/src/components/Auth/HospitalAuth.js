@@ -51,9 +51,9 @@ const HospitalAuth = () => {
       showToast("error", error.message);
     }
   };
-  const login = async () => {
+  const login = async (role) => {
     try {
-      let resposne = await LoginUser(UserState);
+      let resposne = await LoginUser(UserState, GobalState, dispatch, role);
       console.log("resposne", resposne);
       showToast("success", "Loggedin successfully");
     } catch (error) {

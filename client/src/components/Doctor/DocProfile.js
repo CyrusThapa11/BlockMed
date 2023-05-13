@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Avatar,
   Box,
@@ -12,9 +12,27 @@ import {
   WrapItem,
   useToast,
 } from "@chakra-ui/react";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  getFirestore,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
+import app from "../../firebaseconfig";
 import { useEth } from "../../contexts/EthContext";
 
+import axios from "axios";
+
 const DocProfile = () => {
+  const {
+    state: { contract, accounts },
+    state,
+    dispatch,
+  } = useEth();
+  const db = getFirestore(app);
   const toast = useToast();
   const showToast = (
     statuss = "success",
@@ -29,20 +47,93 @@ const DocProfile = () => {
       position: "top-right",
     });
   };
-  const {
-    state: { contract, accounts },
-  } = useEth();
+  console.log("state in DocProfile ", state);
   const [User, setUser] = useState(null);
+  const [Filee, setFilee] = useState(null);
 
-  const updateFirebase = () => {
-    console.log("updateFirebase");
-    let user = User;
-    if (user.phone) delete user["phone"];
-    if (user.age) delete user["age"];
-    if (user.address) delete user["address"];
-    if (user.dob) delete user["dob"];
-    if (user.bloodgroup) delete user["bloodgroup"];
+  const updateFirebase = async () => {
+    try {
+      let user = { ...User };
+      console.log("updateFirebase", user);
+      if (user.phone) delete user["phone"];
+      if (user.age) delete user["age"];
+      if (user.address) delete user["address"];
+      if (user.dob) delete user["dob"];
+      if (user.bloodgroup) delete user["bloodgroup"];
+
+      let formData = new FormData();
+      let data = null;
+      console.log("Filee i s ", Filee);
+      if (Filee !== null && Filee !== undefined) {
+        formData.append("file", Filee);
+        formData.append("upload_preset", "blockmed");
+        console.log("formData", formData);
+        data = await axios.post(
+          "https://api.cloudinary.com/v1_1/drpcddtza/image/upload",
+          formData
+        );
+        console.log("data", data);
+      }
+
+      const q = query(
+        collection(db, "Users"),
+        where("email", "==", user.email)
+      );
+      console.log("getting users !");
+      const querySnapshot = await getDocs(q);
+      console.log("querySnapshot", querySnapshot);
+      querySnapshot.forEach(async (docc) => {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(docc.id, " => ", docc.data());
+        // ! secure_url SET HERE
+        // await updateDoc(washingtonRef, {
+        //   regions: arrayUnion("greater_virginia"),
+        // });
+        let userRef = doc(db, "Users", `${docc.id}`);
+        // frankDocRef = doc(db, "users", "frank");
+
+        // Atomically add a new region to the "regions" array field.
+        if (
+          data !== null &&
+          user.password !== null &&
+          user.password !== undefined
+        ) {
+          await updateDoc(userRef, {
+            image: data.data.secure_url,
+            password: user.password,
+          });
+        } else if (data !== null) {
+          await updateDoc(userRef, {
+            image: data.data.secure_url,
+          });
+        } else if (user.password !== null && user.password !== undefined) {
+          await updateDoc(userRef, {
+            password: user.password,
+          });
+        }
+        return showToast("success", "Successfully updated ");
+        // console.log("doc.id", doc.id);
+      });
+    } catch (error) {
+      showToast("error", error.message || "Some Error occured");
+    }
   };
+  const getUser = async () => {
+    const q = query(collection(db, "Users"), where("email", "==", state.email));
+    console.log("getting users !");
+    const querySnapshot = await getDocs(q);
+    console.log("querySnapshot", querySnapshot);
+    querySnapshot.forEach(async (doc) => {
+      setUser({ ...doc.data() });
+    });
+  };
+  const getDocDetails = () => {
+    // getOneDoctor
+  };
+  useEffect(() => {
+    getUser();
+    getDocDetails();
+  }, []);
   const update = async () => {
     try {
       console.log("update in blcokchain");
@@ -53,12 +144,21 @@ const DocProfile = () => {
       // update to blockchain
 
       await contract.methods
-        .addDoctor(user.name, user.email, accounts[0], parseInt(user.basefee))
+        .addDoctor(
+          user.name,
+          user.email,
+          user.gender,
+          user.introduction,
+          user.age,
+          user.location,
+          accounts[0],
+          parseInt(user.basefee)
+        )
         .send({ from: accounts[0] });
-      showToast("success", "Successfully updated details");
+      showToast("success", "Successfully updated ");
     } catch (error) {
       console.log("error", error);
-      showToast("error", "Some Error in your contract");
+      showToast("error", "Some Error occured");
     }
   };
 
@@ -77,16 +177,18 @@ const DocProfile = () => {
                 <Avatar
                   size="lg"
                   name="Ryan Florence"
-                  src="https://bit.ly/ryan-florence"
+                  src={`${User?.image || "https://bit.ly/ryan-florence"}`}
                 />{" "}
               </WrapItem>
               <FormControl w="50%" id="userName" isRequired>
                 <FormLabel>Profile</FormLabel>
                 <Input
                   name="name"
-                  onChange={(e) =>
-                    setUser({ ...User, [e.target.name]: e.target.value })
-                  }
+                  onChange={(e) => {
+                    // setUser({ ...User, [e.target.name]: e.target.value })
+                    console.log("TGARGE TFILES IS ", e.target.files[0]);
+                    setFilee(e.target.files[0]);
+                  }}
                   placeholder="Image"
                   _placeholder={{ color: "gray.500" }}
                   type="file"
@@ -101,6 +203,7 @@ const DocProfile = () => {
                   onChange={(e) =>
                     setUser({ ...User, [e.target.name]: e.target.value })
                   }
+                  value={User?.email}
                   placeholder="email"
                   _placeholder={{ color: "gray.500" }}
                   type="email"
@@ -115,6 +218,7 @@ const DocProfile = () => {
                   onChange={(e) =>
                     setUser({ ...User, [e.target.name]: e.target.value })
                   }
+                  value={User?.password}
                   placeholder="Password"
                   _placeholder={{ color: "gray.500" }}
                   type="password"
@@ -123,7 +227,9 @@ const DocProfile = () => {
             </GridItem>
           </Grid>
           <Box>
-            <Button variant={"outline"}>Update auth details</Button>
+            <Button variant={"outline"} onClick={() => updateFirebase()}>
+              Update auth details
+            </Button>
           </Box>
           <Grid my="4" templateColumns="repeat(3, 1fr)" gap={5}>
             <GridItem>
@@ -185,14 +291,14 @@ const DocProfile = () => {
               </FormControl>
             </GridItem>
             <GridItem>
-              <FormControl id="dob" isRequired>
-                <FormLabel>Date of Birth</FormLabel>
+              <FormControl id="gender" isRequired>
+                <FormLabel>Gender</FormLabel>
                 <Input
-                  name="dob"
+                  name="gender"
                   onChange={(e) =>
                     setUser({ ...User, [e.target.name]: e.target.value })
                   }
-                  placeholder="DOB"
+                  placeholder="Gender"
                   _placeholder={{ color: "gray.500" }}
                   type="text"
                 />
@@ -216,13 +322,13 @@ const DocProfile = () => {
           <Grid my="4" templateColumns="repeat(3, 1fr)" gap={5}>
             <GridItem>
               <FormControl id="homeadd" isRequired>
-                <FormLabel>Home Address</FormLabel>
+                <FormLabel>Introduction </FormLabel>
                 <Input
-                  name="homeadd"
+                  name="introduction"
                   onChange={(e) =>
                     setUser({ ...User, [e.target.name]: e.target.value })
                   }
-                  placeholder="Home Address"
+                  placeholder="introduction"
                   _placeholder={{ color: "gray.500" }}
                   type="text"
                 />
@@ -230,13 +336,13 @@ const DocProfile = () => {
             </GridItem>
             <GridItem>
               <FormControl id="hospital" isRequired>
-                <FormLabel>Hospital</FormLabel>
+                <FormLabel>Location</FormLabel>
                 <Input
-                  name="hospital"
+                  name="location"
                   onChange={(e) =>
                     setUser({ ...User, [e.target.name]: e.target.value })
                   }
-                  placeholder="Hospital"
+                  placeholder="Location"
                   _placeholder={{ color: "gray.500" }}
                   type="text"
                 />

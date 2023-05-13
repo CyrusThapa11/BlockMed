@@ -50,6 +50,8 @@ const reducer = (state, action) => {
       return { ...state, changePatientSideBarState: data };
     case actions.addROOMID:
       return { ...state, ROOMID: data };
+    case actions.logout:
+      return { ...state, role: null, ethID: null, email: null };
     default:
       return { ...state };
   }

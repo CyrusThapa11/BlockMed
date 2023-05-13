@@ -3,10 +3,14 @@ import DocCard from "./DocCard";
 import { Flex, useToast } from "@chakra-ui/react";
 import { useEth } from "../../contexts/EthContext";
 import { useState } from "react";
+import { collection, getDocs, getFirestore } from "firebase/firestore";
+import app from "../../firebaseconfig";
 
 const AllDoctors = () => {
+  const db = getFirestore(app);
   const toast = useToast();
   const [state, setstate] = useState(null);
+  const [FirebaseUsers, setFirebaseUsers] = useState(null);
   const showToast = (
     statuss = "success",
     description = "Some Eror occured"
@@ -43,27 +47,53 @@ const AllDoctors = () => {
       showToast("error", error.message);
     }
   };
+
+  const getDocDetails = async () => {
+    console.log("getDocDetails");
+    let usersss = [];
+    const querySnapshot = await getDocs(collection(db, "Users"));
+
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      console.log(doc.id, " => ", doc.data());
+      usersss.push({ ...doc.data() });
+    });
+    console.log("usersss", usersss);
+    setFirebaseUsers(usersss);
+  };
+
   useEffect(() => {
     // effect
 
     ViewADoctor();
+    getDocDetails();
     return () => {
       // cleanup;
     };
   }, []);
   return (
     <>
-      <h2>AllDoctors</h2>
       <Flex flexWrap={"wrap"} gap="3">
         <DocCard />
         <DocCard />
         <DocCard />
         <DocCard />
         <DocCard />
-        {state?.length > 0 ? (
+        {FirebaseUsers?.length && state?.length > 0 ? (
           <>
             {state.map((doc) => {
-              return <DocCard {...doc} key={doc.address_} />;
+              // ! here
+              let image = null;
+              FirebaseUsers.forEach((userr) => {
+                if (
+                  userr.email === doc.email &&
+                  userr.image !== null &&
+                  userr.image !== undefined
+                ) {
+                  image = userr.image;
+                }
+              });
+              return <DocCard {...doc} key={doc.address_} image={image} />;
             })}
           </>
         ) : (

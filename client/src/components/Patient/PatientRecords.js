@@ -76,34 +76,23 @@ const PatientRecords = () => {
       </Box>
       <TableContainer>
         <Table colorScheme="teal">
-          <TableCaption>Imperial to metric conversion factors</TableCaption>
           <Thead>
             <Tr>
               <Th> Sno </Th>
               <Th> Doctor Name</Th>
               <Th>Doctor Address</Th>
               <Th> Date of appointment </Th>
-              <Th isNumeric>Amount</Th>
               <Th>View</Th>
               {/* <Th>Download</Th> */}
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>inches</Td>
-              <Td>millimetres (mm)</Td>
-              <Td>millimetres (mm)</Td>
-              <Td>millimetres (mm)</Td>
-              <Td isNumeric>25.4</Td>
-              <Td>VIEW</Td>
-            </Tr>
             {Records?.map((rec, index) => {
               return (
                 <Tr>
                   <Td> {`${index}`} </Td>
                   <Td> {rec?.docname || `Doc no. ${index}`} </Td>
-                  <Td>{rec.fileHashes}</Td>
-                  <Td>{rec.presciptions}</Td>
+                  <Td>{rec.doctor_}</Td>
                   <Td>{new Date(rec.timeStamp * 1000).toLocaleString()} </Td>
                   <Td>
                     <Button

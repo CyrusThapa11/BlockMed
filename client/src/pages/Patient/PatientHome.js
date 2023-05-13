@@ -15,7 +15,9 @@ const PatientHome = () => {
   const {
     state: { contract, accounts },
     dispatch,
+    state,
   } = useEth();
+  console.log("state in PatientHome ", state);
   return (
     <Box>
       <Box
@@ -37,7 +39,6 @@ const PatientHome = () => {
             display={{ base: "none", sm: "none", md: "block" }}
           >
             <Center flexDir={"column"}>
-              <Button>Click</Button>
               <Box
                 my="2"
                 display="flex"

@@ -71,12 +71,6 @@ const VidCall = () => {
     });
   };
 
-  return (
-    <div
-      className="myCallContainer"
-      ref={myMeeting}
-      style={{ width: "30vw", height: "30vh" }}
-    ></div>
-  );
+  return <div className="myCallContainer" ref={myMeeting}></div>;
 };
 export default React.memo(VidCall);

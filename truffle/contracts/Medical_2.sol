@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.7.0 <0.9.0;
-
+// Medical_2.sol
 contract HealthManagement2 {
     struct Record{
         // string [] fileHashes;
@@ -22,11 +22,12 @@ contract HealthManagement2 {
         address payable patient_;
         address payable doctor_;
         string patientName;
-        string docname;
+        string docname; 
         uint256 timeslot_;
         uint256 timeStart;
         uint256 timeEnd;
         uint256 id;
+        bool paymentStatus;
     }
 
     // PATIENTS :
@@ -46,6 +47,10 @@ contract HealthManagement2 {
     struct Doctor{
         string name;
         string email;
+        string gender;
+        string introduction;
+        uint256 age;
+        string location;
         address payable address_;
         // address [] doctorToPatient;
         uint256 basefee;
@@ -148,7 +153,7 @@ contract HealthManagement2 {
                temp[pos] = P.records_[i];
                pos++;
             }
-
+            
         return (temp);
     }
     

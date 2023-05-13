@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 import {
   Box,
-
   Center,
   Flex,
   Grid,
   GridItem,
   Image,
-
   Text,
 } from "@chakra-ui/react";
 import DoctorAuth from "./DoctorAuth";

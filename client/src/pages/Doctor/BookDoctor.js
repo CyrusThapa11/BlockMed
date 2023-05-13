@@ -33,7 +33,7 @@ const BookDoctor = () => {
               display={{ base: "none", sm: "none", md: "block" }}
             >
               <Center flexDir={"column"}>
-                <Button>Click</Button>
+  
                 <Box
                   my="2"
                   display="flex"
@@ -63,7 +63,7 @@ const BookDoctor = () => {
                 >
                   <RiDashboardFill size={25} /> <Text ml="4">Profile</Text>
                 </Box>
-                <Box
+                {/* <Box
                   my="2"
                   display="flex"
                   justifyContent={"flex-start"}
@@ -78,7 +78,7 @@ const BookDoctor = () => {
                 >
                   <RiDashboardFill size={25} />
                   <Text ml="4">My Prescriptions</Text>
-                </Box>
+                </Box> */}
                 <Box
                   my="2"
                   display="flex"

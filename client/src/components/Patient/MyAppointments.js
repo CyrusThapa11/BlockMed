@@ -69,7 +69,6 @@ const MyAppointments = () => {
   return (
     <TableContainer>
       <Table colorScheme="teal">
-        <TableCaption>Imperial to metric conversion factors</TableCaption>
         <Thead>
           <Tr>
             <Th> Sno </Th>
@@ -83,30 +82,12 @@ const MyAppointments = () => {
           </Tr>
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>inches</Td>
-            <Td>millimetres (mm)</Td>
-            <Td>millimetres (mm)</Td>
-            <Td>millimetres (mm)</Td>
-            <Td isNumeric>25.4</Td>
-            <Td>Completed</Td>
-            <Td>VIEW</Td>
-          </Tr>
-          <Tr>
-            <Td>feet</Td>
-            <Td>millimetres (mm)</Td>
-            <Td>millimetres (mm)</Td>
-            <Td>centimetres (cm)</Td>
-            <Td isNumeric>30.48</Td>
-            <Td>Pending</Td>
-            <Td>VIEW</Td>
-          </Tr>
           {Appointments?.map((appointment, index) => {
             return (
               <Tr key={appointment.timeslot_}>
                 <Td>{index + 1}</Td>
-                <Td> {appointment.doctor_.slice(0, 10)} </Td>
                 <Td>{appointment.docname || "Docname"}</Td>
+                <Td> {appointment.doctor_.slice(0, 10)} </Td>
                 <Td>
                   {new Date(
                     parseInt(appointment.timeslot_) * 1000

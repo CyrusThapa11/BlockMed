@@ -1,8 +1,21 @@
 import React from "react";
-import { Box, Flex, Image, Spacer } from "@chakra-ui/react";
+import { Box, Button, Flex, Image, Spacer } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { actions, useEth } from "../../contexts/EthContext";
 
 const Navbar = () => {
+  const {
+    state: { contract, accounts },
+    dispatch,
+    state,
+  } = useEth();
+  const logoutUser = () => {
+    console.log("logut");
+    dispatch({
+      type: actions.logout,
+    });
+    // dispatch()
+  };
   return (
     <Box p={"7"} px="14">
       <Flex>
@@ -23,7 +36,14 @@ const Navbar = () => {
           <Spacer />
           <Link to="/">About Us</Link>
           <Spacer />
-          <Link to="/auth">Signup/SignIn</Link>
+          {state.role === null || state.role === undefined ? (
+            <Link to="/auth">Signup/SignIn</Link>
+          ) : (
+            // <Link to="/auth">Logout</Link>
+            <Button onClick={() => logoutUser()}>LOGOUT</Button>
+          )}
+          {/* <Link to="/auth">Signup/SignIn</Link>
+           */}
         </Flex>
       </Flex>
     </Box>

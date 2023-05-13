@@ -25,10 +25,9 @@ const PatientAuth = () => {
   const [UserState, setUserState] = useState(null);
 
   const toast = useToast();
-  const showToast = (
-    statuss = "success",
-    description = "Some Eror occured"
-  ) => {
+  const showToast = (statuss, description) => {
+    if (!statuss) statuss = "error";
+    if (!description) description = "Some Eror occured";
     toast({
       title: statuss,
       description: description,
@@ -50,23 +49,33 @@ const PatientAuth = () => {
       });
       showToast("success", "Loggedin successfully");
     } catch (error) {
-      console.log("error MILGYA", error);
-      showToast("error", error.message);
+      console.log("error MILGYA", error || error.message);
+      showToast("error", error || error.message);
     }
   };
   const register = async (role) => {
+    if (UserState === null || !UserState.email || !UserState.password) {
+      return showToast("error", "Incomplete Credentials");
+    }
     try {
       let resposne = await registerUser(UserState, GobalState, dispatch, role);
       console.log("resposne", resposne);
       showToast("success", "Registered successfully");
+      dispatch({
+        type: actions.changePatientSideBarState,
+        data: 0,
+      });
     } catch (error) {
-      console.log("error MILGYA", error);
-      showToast("error", error.message);
+      console.log("error MILGYA", error || error.message);
+      showToast("error", error || error.message);
     }
   };
-  const login = async () => {
+  const login = async (role) => {
+    if (UserState === null || !UserState.email || !UserState.password) {
+      return showToast("error", "Incomplete Credentials");
+    }
     try {
-      let resposne = await LoginUser(UserState);
+      let resposne = await LoginUser(UserState, GobalState, dispatch, role);
       // console.log("resposne ", resposne);
       dispatch({
         type: actions.login,
@@ -75,9 +84,13 @@ const PatientAuth = () => {
         },
       });
       showToast("success", "Loggedin successfully");
+      dispatch({
+        type: actions.changePatientSideBarState,
+        data: 0,
+      });
     } catch (error) {
-      // console.log("error MILGYA", error);
-      showToast("error", error.message);
+      console.log("error MILGYA", error || error.message);
+      showToast("error", error || error.message);
     }
   };
   return (

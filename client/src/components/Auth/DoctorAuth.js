@@ -38,7 +38,7 @@ const DoctorAuth = () => {
       showToast("success", "Loggedin successfully");
     } catch (error) {
       console.log("error MILGYA", error);
-      showToast("error", error.message);
+      showToast("error", error || error.message);
     }
   };
   const register = async (role) => {
@@ -46,19 +46,27 @@ const DoctorAuth = () => {
       let resposne = await registerUser(UserState, GobalState, dispatch, role);
       console.log("resposne", resposne);
       showToast("success", "Registered successfully");
+      dispatch({
+        type: actions.changeDoctorSideBarState,
+        data: 0,
+      });
     } catch (error) {
       console.log("error MILGYA", error);
-      showToast("error", error.message);
+      showToast("error", error || error.message);
     }
   };
-  const login = async () => {
+  const login = async (role) => {
     try {
-      let resposne = await LoginUser(UserState);
+      let resposne = await LoginUser(UserState, GobalState, dispatch, role);
       console.log("resposne", resposne);
       showToast("success", "Loggedin successfully");
+      dispatch({
+        type: actions.changeDoctorSideBarState,
+        data: 0,
+      });
     } catch (error) {
       console.log("error MILGYA", error);
-      showToast("error", error.message);
+      showToast("error", error || error.message);
     }
   };
 
