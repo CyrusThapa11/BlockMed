@@ -6,7 +6,7 @@ This box comes with everything you need to start using Truffle to write, compile
 
 First ensure you are in an empty directory.
 
-Run the `unbox` command using 1 of 2 ways.
+Run the ` unbox ` command using 1 of 2 ways.
 
 ```sh
 # Install Truffle globally and run `truffle unbox`
